@@ -1,7 +1,6 @@
 ﻿;by ahker
 ;reference https://www.autoahk.com/archives/3274
 #include <py>
-#include <log4ahk>
 #include <btt>
 #SingleInstance Force
 SetWorkingDir, %A_ScriptDir%
@@ -13,7 +12,6 @@ hModule := DllCall("LoadLibrary", "Str", tcmatch, "Ptr")
 Hotkey, if, WinActive("ahk_class CabinetWClass") && A_CaretX = ""
 ;预加载
 keyValueFind("a","a")
-
 loop, 32
 {
     m_hotkey(A_Index + 91)
@@ -55,7 +53,6 @@ choose:
     ctrl_hotkey := A_ThisHotkey
     ctrl_num := SubStr(ctrl_hotkey, 0)
     SelectItem(all_file_name[ctrl_num])
-    log.info(ctrl_num)
 return
 QuickSearch:
     Matched := ""
@@ -131,8 +128,6 @@ SelectItem(argv)
         thisWindow := window
     }
     folder := thisWindow.document.folder
-    log.info(ComObjType(thisWindow.document, "Name"))
-    log.info(ComObjType(folder, "Name"), ComObjType(folder, "Class"))
     for item in folder.items
     {
         if item.name == argv
