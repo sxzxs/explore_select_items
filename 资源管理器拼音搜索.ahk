@@ -30,7 +30,7 @@ Return
 m_hotkey(asci)
 {
     thisHotkey := chr(asci)
-    Hotkey, %thisHotkey%, QuickSearch
+    Hotkey, %thisHotkey%, QuickSearch,B
 }
 ~$esc::
     hotkeys := ""
