@@ -104,7 +104,7 @@ btt(Text:="", X:="", Y:="", WhichToolTip:="", BulitInStyleOrStyles:="", BulitInO
 
        , Style1 := {TextColor:0xffeef8f6
                   , BackgroundColor:0xff1b8dff
-                  , FontSize:14}
+                  , FontSize:15}
 
        , Style2 := {Border:1
                   , Rounded:8
@@ -118,13 +118,13 @@ btt(Text:="", X:="", Y:="", WhichToolTip:="", BulitInStyleOrStyles:="", BulitInO
                   , BackgroundColor:0xffFCEDE6
                   , FontSize:14}
 
-       , Style4 := {Border:10
+       , Style4 := {Border:1
                   , Rounded:20
                   , BorderColor:0xff604a78
                   , TextColor:0xffF3AE00
                   , BackgroundColor:0xff6A537F
                   , FontSize:20
-                  , FontStyle:"Bold Italic"}
+                  , FontStyle:"BoldItalic"}
 
        , Style5 := {Border:0
                   , Rounded:5

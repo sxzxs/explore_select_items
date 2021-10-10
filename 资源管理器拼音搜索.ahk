@@ -83,7 +83,7 @@ update_btt()
 {
     local
     global hotkeys, all_file_name_str
-    btt(hotkeys "`n" all_file_name_str,,,,"Style4",{Transparent:150})
+    btt(hotkeys "`n" all_file_name_str,,,,"Style1",{Transparent:200})
 }
 keyValueFind(haystack,needle)
 {
