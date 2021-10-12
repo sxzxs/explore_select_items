@@ -2,8 +2,6 @@
 ;reference https://www.autoahk.com/archives/3274
 #include <py>
 #include <btt>
-#include <my_lib>
-#include <log4ahk>
 #SingleInstance Force
 SetWorkingDir, %A_ScriptDir%
 CoordMode, ToolTip, Screen
@@ -128,7 +126,7 @@ update_btt()
             s := "[✓]" A_LoopField
         tmp_str .= s "`n"
     }
-    btt(hotkeys "`n" tmp_str, A_ScreenWidth/2, A_ScreenHeight/2,,"Style1",{Transparent:200})
+    btt(hotkeys "`n" tmp_str, A_ScreenWidth/2, A_ScreenHeight/2,,"Style4",{Transparent:200})
 }
 keyValueFind(haystack,needle)
 {
@@ -193,10 +191,8 @@ SelectItem(path)
         return
     }
     sFullPath := sPath "\" path
-    log.info(sFullPath)
     sFullPath := StrReplace(sFullPath, ":\\",":\")
     sFullPath := StrReplace(sFullPath, "C:\用户", "C:\Users")
-    log.info(sFullPath)
 	FolderPidl := DllCall("shell32\ILCreateFromPath", "Str", sPath)
 	DllCall("shell32\SHParseDisplayName", "str", sFullPath, "Ptr", 0, "Ptr*", ItemPidl := 0, "Uint", 0, "Uint*", 0)
 	DllCall("shell32\SHOpenFolderAndSelectItems", "Ptr", FolderPidl, "UInt", 1, "Ptr*", ItemPidl, "Int", 0)
@@ -206,4 +202,19 @@ SelectItem(path)
 CoTaskMemFree(pv) 
 {
    Return   DllCall("ole32\CoTaskMemFree", "Ptr", pv)
+}
+run_as_admin()
+{
+    full_command_line := DllCall("GetCommandLine", "str")
+    if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
+    {
+        try
+        {
+            if A_IsCompiled
+                Run *RunAs "%A_ScriptFullPath%" /restart
+            else
+                Run *RunAs "%A_AhkPath%" /restart "%A_ScriptFullPath%"
+        }
+        ExitApp
+    }
 }
