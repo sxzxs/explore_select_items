@@ -2,10 +2,13 @@
 ;reference https://www.autoahk.com/archives/3274
 #include <py>
 #include <btt>
+#include <my_lib>
+#include <log4ahk>
 #SingleInstance Force
 SetWorkingDir, %A_ScriptDir%
 CoordMode, ToolTip, Screen
 SetBatchLines, -1
+run_as_admin()
 global Items := []
 global tab_index := 1
 global all_file_name := []
@@ -67,6 +70,7 @@ choose:
     ctrl_hotkey := A_ThisHotkey
     ctrl_num := SubStr(ctrl_hotkey, 0)
     SelectItem(all_file_name[ctrl_num])
+    btt()
 return
 
 tab::
@@ -180,15 +184,19 @@ SelectItem_old(argv)
 ;不支持共享盘 \\xxx\
 SelectItem(path)
 {
-    ;SelectItem_old(path)
-    ;return
+    SelectItem_old(path)
+    return
     sPath := getPath()
     if(SubStr(sPath, 1 , 6) == "file:\")
     {
         SelectItem_old(path)
+        return
     }
     sFullPath := sPath "\" path
+    log.info(sFullPath)
     sFullPath := StrReplace(sFullPath, ":\\",":\")
+    sFullPath := StrReplace(sFullPath, "C:\用户", "C:\Users")
+    log.info(sFullPath)
 	FolderPidl := DllCall("shell32\ILCreateFromPath", "Str", sPath)
 	DllCall("shell32\SHParseDisplayName", "str", sFullPath, "Ptr", 0, "Ptr*", ItemPidl := 0, "Uint", 0, "Uint*", 0)
 	DllCall("shell32\SHOpenFolderAndSelectItems", "Ptr", FolderPidl, "UInt", 1, "Ptr*", ItemPidl, "Int", 0)
