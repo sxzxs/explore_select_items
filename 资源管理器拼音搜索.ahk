@@ -91,21 +91,17 @@ QuickSearch:
         hotkeys := hotkeys . A_ThisHotkey
     }
     update_btt()
-    if(hotkeys != "")
-    {
-        Path := getPath()
-        folder := ComObjCreate("shell.Application").NameSpace(Path)
-        items := folder.Items
-    }
+    ;获取所有文件名字
+    items := get_explore_all_file_name()
     all_file_name := []
     all_file_name_str := ""
     index := 1
-    for item in items
+    for k,item in items
     {
-        if (keyValueFind(item.name, hotkeys))
+        if (keyValueFind(item, hotkeys))
         {
-            all_file_name.push(item.name)
-            all_file_name_str .= index ": " item.name "`n"
+            all_file_name.push(item)
+            all_file_name_str .= index ": " item "`n"
             index++
         }
     }
@@ -154,14 +150,15 @@ getPath()
     return
     for window in ComObjCreate("Shell.Application").Windows 
     {
-        if (window.name = "文件资源管理器" && window.hwnd == thisHwnd)
+        if (window.hwnd == thisHwnd)
         path := StrReplace(window.LocationURL, "file:///", "")
         path := StrReplace(path, "/", "\")
         path := StrReplace(path, "`%20"," ")
     }
     Return path
 }
-SelectItem_old(argv)
+;在当前活动资源管理器选择指定名字的文件
+SelectItem(argv)
 {
     hwnd := WinActive("a")
     Windows := ComObjCreate("shell.Application").Windows
@@ -179,8 +176,26 @@ SelectItem_old(argv)
         }
     }
 }
+;获取当前资源管理器所以文件名字
+get_explore_all_file_name()
+{
+    all_file_name := []
+    hwnd := WinActive("a")
+    Windows := ComObjCreate("shell.Application").Windows
+    for window in Windows
+    {
+        if window.hwnd == hwnd
+        thisWindow := window
+    }
+    folder := thisWindow.document.folder
+    for item in folder.items
+    {
+        all_file_name.push(item.name)
+    }
+    return all_file_name
+}
 ;不支持共享盘 \\xxx\
-SelectItem(path)
+SelectItem_old(path)
 {
     SelectItem_old(path)
     return
