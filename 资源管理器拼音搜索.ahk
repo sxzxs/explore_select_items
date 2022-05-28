@@ -2,6 +2,7 @@
 ;reference https://www.autoahk.com/archives/3274
 #include <py>
 #include <btt>
+#include <log>
 #SingleInstance Force
 SetWorkingDir, %A_ScriptDir%
 CoordMode, ToolTip, Screen
@@ -10,6 +11,9 @@ run_as_admin()
 global Items := []
 global tab_index := 1
 global all_file_name := []
+global g_is_finc_status := false
+log.is_use_editor := false
+log.is_out_console := false
  ;注册热键
 Hotkey, if, WinActive("ahk_class CabinetWClass") && A_CaretX = ""
 ;预加载
@@ -35,6 +39,7 @@ m_hotkey(asci)
     Hotkey, %thisHotkey%, QuickSearch,B
 }
 ~$esc::
+    g_is_finc_status := false
     hotkeys := ""
     tab_index := 1
     btt()
@@ -92,7 +97,9 @@ QuickSearch:
     }
     update_btt()
     ;获取所有文件名字
+    log.info("in")
     items := get_explore_all_file_name()
+    log.info("end")
     all_file_name := []
     all_file_name_str := ""
     index := 1
@@ -105,6 +112,7 @@ QuickSearch:
             index++
         }
     }
+    log.info("3")
     SelectItem(all_file_name[1])
     update_btt()
 Return
@@ -179,19 +187,25 @@ SelectItem(argv)
 ;获取当前资源管理器所以文件名字
 get_explore_all_file_name()
 {
-    all_file_name := []
+    static all_file_name := []
+    if(g_is_finc_status)
+        return all_file_name
+    else
+        all_file_name := []
     hwnd := WinActive("a")
+    log.info(hwnd)
     Windows := ComObjCreate("shell.Application").Windows
     for window in Windows
     {
         if window.hwnd == hwnd
-        thisWindow := window
+            thisWindow := window
     }
     folder := thisWindow.document.folder
     for item in folder.items
     {
         all_file_name.push(item.name)
     }
+    g_is_finc_status := true
     return all_file_name
 }
 ;不支持共享盘 \\xxx\
