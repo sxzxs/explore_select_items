@@ -48,6 +48,7 @@ Return
 #if WinActive("ahk_class CabinetWClass") && A_CaretX = ""
 
 ~Enter::
+    g_is_finc_status := false
     hotkeys := ""
     tab_index := 1
     btt()
