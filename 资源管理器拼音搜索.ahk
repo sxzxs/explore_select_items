@@ -2,7 +2,6 @@
 ;reference https://www.autoahk.com/archives/3274
 #include <py>
 #include <btt>
-#include <log>
 #SingleInstance Force
 SetWorkingDir, %A_ScriptDir%
 CoordMode, ToolTip, Screen
@@ -12,8 +11,6 @@ global Items := []
 global tab_index := 1
 global all_file_name := []
 global g_is_finc_status := false
-log.is_use_editor := false
-log.is_out_console := false
  ;注册热键
 Hotkey, if, WinActive("ahk_class CabinetWClass") && A_CaretX = ""
 ;预加载
@@ -98,9 +95,7 @@ QuickSearch:
     }
     update_btt()
     ;获取所有文件名字
-    log.info("in")
     items := get_explore_all_file_name()
-    log.info("end")
     all_file_name := []
     all_file_name_str := ""
     index := 1
@@ -113,7 +108,6 @@ QuickSearch:
             index++
         }
     }
-    log.info("3")
     SelectItem(all_file_name[1])
     update_btt()
 Return
@@ -194,7 +188,6 @@ get_explore_all_file_name()
     else
         all_file_name := []
     hwnd := WinActive("a")
-    log.info(hwnd)
     Windows := ComObjCreate("shell.Application").Windows
     for window in Windows
     {
