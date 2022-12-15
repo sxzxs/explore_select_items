@@ -7,6 +7,7 @@ SetWorkingDir, %A_ScriptDir%
 CoordMode, ToolTip, Screen
 SetBatchLines, -1
 run_as_admin()
+py.mem_size := 4000
 global Items := []
 global tab_index := 1
 global all_file_name := []
