@@ -95,11 +95,26 @@ choose:
     SelectItem(all_file_name[ctrl_num])
     ;btt()
     DrawHXGUI("a", "")
+    hotkeys := ""
+    tab_index := 1
 return
 
 tab::
 tab_choose()
 return
++tab::
+tab_choose_sub()
+return
+tab_choose_sub()
+{
+    if(tab_index == 1)
+    {
+        tab_index := all_file_name.Length() + 1
+    }
+    tab_index--
+    SelectItem(all_file_name[tab_index])
+    update_btt()
+}
 tab_choose()
 {
     if(tab_index == all_file_name.Length())
