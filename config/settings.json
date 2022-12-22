@@ -5,7 +5,7 @@
     "hook_open": "+space",
     "is_show_logo": 0,
     "is_use_86wubi": 0,
-    "is_use_xiaohe_double_pinyin": 1,
+    "is_use_xiaohe_double_pinyin": 0,
     "key_edit_new": "~$^d",
     "key_edit_now": "~$^e",
     "key_open_editor": "~$!c",

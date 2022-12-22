@@ -184,7 +184,40 @@ update_btt()
                 , FocusColor := g_config["win_hook_focuscolor"], FontSize := g_config["win_hook_fontsize"]
                 , FontBold := g_config["win_hook_fontbold"])
 }
-keyValueFind(haystack,needle)
+
+keyValueFind(haystack, needle)
+{
+    ;拼音首字母转换
+	;msgbox,% py.double_spell_muti(haystack)
+	StringUpper, haystack, haystack
+	StringUpper, needle, needle
+	findSign:=1
+	needleArray := StrSplit(needle, " ")
+	Loop,% needleArray.MaxIndex()
+	{
+		if(needleArray[A_Index] == "")
+			Continue
+		if(g_config.is_use_xiaohe_double_pinyin)
+		{
+			if(py.is_all_spell_match(haystack, needleArray[A_Index]) == -1 && py.is_all_spell_init_match(haystack, needleArray[A_Index]) == -1
+					&& py.is_double_spell_match(haystack, needleArray[A_Index]) == -1)
+			{
+				findSign:=0
+				break
+			}
+		}
+		else
+		{
+			if(py.is_all_spell_match(haystack, needleArray[A_Index]) == -1 && py.is_all_spell_init_match(haystack, needleArray[A_Index]) == -1)
+			{
+				findSign:=0
+				break
+			}
+		}
+	}
+	return findSign
+}
+keyValueFind_old(haystack,needle)
 {
     ;拼音首字母转换
 	;msgbox,% py.double_spell_muti(haystack)
