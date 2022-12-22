@@ -156,26 +156,33 @@ Return
 update_btt()
 {
     local
-    global hotkeys, all_file_name_str, tab_index, g_config
+    global hotkeys, all_file_name_str, all_file_name, tab_index, g_config
+	global g_total_show_number := g_config["win_hook_total_show_number"]
+
     if(hotkeys == "")
         return
+
+    midle_show_number := g_total_show_number / 2
+    start_index := 1
+    if(tab_index > midle_show_number)
+        start_index := ceil(tab_index - midle_show_number)
+
+    have_show := 1
     tmp_str := []
-    Loop, parse, all_file_name_str, `n, `r  ; 在 `r 之前指定 `n, 这样可以同时支持对 Windows 和 Unix 文件的解析.
+    loop,% g_total_show_number
     {
-        s := A_LoopField
-        tmp_str.Push(s)
+        if(start_index + A_index - 1 > all_file_name.Length())
+            break
+        tmp_str.Push((start_index + A_index - 1) ". " substr(all_file_name[start_index + A_index - 1], instr(all_file_name[start_index + A_index - 1], "]") + 1))
     }
 
     DrawHXGUI(hotkeys == "" ? "⌨" : hotkeys, tmp_str, A_ScreenWidth/2, A_ScreenHeight/2 
-                , tab_index, 1
+                , tab_index - start_index + 1, 1
                 , Font:= g_config["win_hook_font"], BackgroundColor := g_config["win_hook_backgroundcolor"]
                 , TextColor := g_config["win_hook_textcolor"], CodeColor := g_config["win_hook_codecolor"]
                 , BorderColor := g_config["win_hook_bordercolor"], FocusBackColor := g_config["win_hook_focusbackcolor"]
                 , FocusColor := g_config["win_hook_focuscolor"], FontSize := g_config["win_hook_fontsize"]
                 , FontBold := g_config["win_hook_fontbold"])
-
-
-    ;btt(hotkeys "`n" tmp_str, A_ScreenWidth/2, A_ScreenHeight/2,,"Style4",{Transparent:200})
 }
 keyValueFind(haystack,needle)
 {
