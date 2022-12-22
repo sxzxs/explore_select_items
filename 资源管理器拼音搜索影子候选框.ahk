@@ -277,8 +277,26 @@ SelectItem(argv)
     }
 }
 
-;获取当前资源管理器所以文件名字
 get_explore_all_file_name()
+{
+    static all_file_name := []
+	path := getPath()
+    if(g_is_finc_status)
+        return all_file_name
+    else
+        all_file_name := []
+
+	Loop Files,% path "\*", DF
+	{
+		all_file_name.Push(A_LoopFileName)
+	}
+
+    g_is_finc_status := true
+    return all_file_name
+}
+;获取当前资源管理器所以文件名字
+/*
+get_explore_all_file_name_old()
 {
     static all_file_name := []
     if(g_is_finc_status)
@@ -300,6 +318,7 @@ get_explore_all_file_name()
     g_is_finc_status := true
     return all_file_name
 }
+*/
 ;不支持共享盘 \\xxx\
 SelectItem_old(path)
 {
