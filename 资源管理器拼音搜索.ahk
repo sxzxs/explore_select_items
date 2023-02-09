@@ -176,7 +176,8 @@ update_btt()
         tmp_str.Push((start_index + A_index - 1) ". " substr(all_file_name[start_index + A_index - 1], instr(all_file_name[start_index + A_index - 1], "]") + 1))
     }
 
-    DrawHXGUI(hotkeys == "" ? "⌨" : hotkeys, tmp_str, A_ScreenWidth/2, A_ScreenHeight/2 
+	WinGetPos, X, Y, W, H, A
+    DrawHXGUI(hotkeys == "" ? "⌨" : hotkeys, tmp_str, X + W / 2, Y + H / 2 
                 , tab_index - start_index + 1, 1
                 , Font:= g_config["win_hook_font"], BackgroundColor := g_config["win_hook_backgroundcolor"]
                 , TextColor := g_config["win_hook_textcolor"], CodeColor := g_config["win_hook_codecolor"]
