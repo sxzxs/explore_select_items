@@ -14,6 +14,7 @@
 2. 右键管理员执行exe程序,如果安装ahkv1,可以直接执行ahk脚本
 3. 在windows资源管理器使用
 4. tab和shift tab焦点、enter进入目录
+5. 多个搜索条件空格隔开例如: "guanli ziyuan qi" 匹配 "资源管理器" 
 
 ## todo
 * 右键菜单状态屏蔽功能
