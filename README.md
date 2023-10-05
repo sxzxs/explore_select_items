@@ -7,7 +7,7 @@
 不仅支持**拼音首字母**，还支持**全屏、双拼、86五笔等**
 
 ## 使用效果
-![使用效果](./picture/HOOK.gif)
+![使用效果](https://img2023.cnblogs.com/blog/2850002/202302/2850002-20230219174626741-1338020428.png)
 
 ## 使用说明
 1. 下载 [github下载](https://github.com/sxzxs/explore_select_items/archive/refs/heads/master.zip)

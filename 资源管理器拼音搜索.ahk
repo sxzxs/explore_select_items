@@ -18,13 +18,21 @@ global g_is_finc_status := false
 global g_json_path := A_ScriptDir . "/config/settings.json"
 global g_config := {}
 global g_is_get_all_file_name := true
+global g_is_right_menu := false
 if(!loadconfig(g_config))
 {
     MsgBox,% "Load config"  g_json_path " failed! will exit!!"
     ExitApp
 }
+
+;by tebayaki 检测右键菜单是否激活
+callback := RegisterCallback("WinEventProc")
+hook := DllCall("SetWinEventHook", "uint", 6, "uint", 7, "ptr", 0, "ptr", callback, "uint", 0, "uint", 0, "uint", 0)
+
  ;注册热键
 Hotkey, if, WinActive("ahk_class CabinetWClass") && A_CaretX = ""
+fn := Func("HotkeyShouldFire")
+Hotkey If, % fn
 ;预加载
 keyValueFind("}}","a")
 
@@ -50,6 +58,10 @@ m_hotkey(asci)
     thisHotkey := chr(asci)
     Hotkey, %thisHotkey%, QuickSearch,B
 }
+
+;关闭上下文
+Hotkey If
+
 ~$esc::
     g_is_finc_status := false
     hotkeys := ""
@@ -62,7 +74,8 @@ Return
 #if WinActive("ahk_class CabinetWClass") && A_CaretX = ""
 
 Enter::
-    SelectItem(all_file_name[tab_index])
+    if(g_is_finc_status)
+        SelectItem(all_file_name[tab_index])
     g_is_finc_status := false
     hotkeys := ""
     tab_index := 1
@@ -541,4 +554,23 @@ WinGetClass(hwnd)
 {
 	WinGetClass, class, ahk_id %hwnd%
 	return class
+}
+
+HotkeyShouldFire(thisHotkey) 
+{
+    global g_is_right_menu
+    return WinActive("ahk_class CabinetWClass") && !g_is_right_menu && A_CaretX = ""
+}
+
+WinEventProc(hWinEventHook, event, hwnd, idObject, idChild, idEventThread, dwmsEventTime) 
+{
+    global g_is_right_menu
+    if(event == 6)
+    {
+        g_is_right_menu := true
+    }
+    else if(event == 7)
+    {
+        g_is_right_menu := false
+    }
 }
