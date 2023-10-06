@@ -94,8 +94,12 @@ Backspace::
     hotkeys := SubStr(hotkeys, 1, StrLen(hotkeys) - 1)
     if(StrLen(hotkeys) == 0)
     {
-        ;btt()
-    	DrawHXGUI("a", "")
+        g_is_finc_status := false
+        hotkeys := ""
+        tab_index := 1
+        g_is_get_all_file_name := true
+
+        DrawHXGUI("a", "")
         return
     }
     update_btt()
