@@ -3,6 +3,7 @@
 #include <py>
 #include <btt>
 #include <json>
+#include <IbPinyin>
 #SingleInstance Force
 
 ;py.cpp2ahk_open_folder_and_selcet_item("G:\我的AHK程序\我的工程\新建文件夹")
@@ -160,7 +161,7 @@ QuickSearch:
     index := 1
     for k,item in items
     {
-        if (keyValueFind(item, hotkeys))
+        if (keyValueFind_Chaoses(item, hotkeys))
         {
             all_file_name.push(item)
             all_file_name_str .= index ": " item "`n"
@@ -203,6 +204,29 @@ update_btt()
                 , FontBold := g_config["win_hook_fontbold"])
 }
 
+;https://github.com/Chaoses-Ib/IbPinyinLib
+keyValueFind_Chaoses(haystack, needle)
+{
+    ;拼音首字母转换
+	;msgbox,% py.double_spell_muti(haystack)
+	StringLower, haystack, haystack
+	StringLower, needle, needle
+	findSign:=1
+	needleArray := StrSplit(needle, " ")
+	Loop,% needleArray.MaxIndex()
+	{
+		if(needleArray[A_Index] == "")
+			Continue
+        if(!IbPinyin_IsMatch(needleArray[A_Index], haystack, IbPinyin_AsciiFirstLetter | IbPinyin_Ascii))
+        ;if(py.is_all_spell_match(haystack, needleArray[A_Index]) == -1 && py.is_all_spell_init_match(haystack, needleArray[A_Index]) == -1)
+        {
+            findSign:=0
+            break
+        }
+	}
+	return findSign
+}
+
 keyValueFind(haystack, needle)
 {
     ;拼音首字母转换
@@ -232,26 +256,6 @@ keyValueFind(haystack, needle)
 				break
 			}
 		}
-	}
-	return findSign
-}
-keyValueFind_old(haystack,needle)
-{
-    ;拼音首字母转换
-	;msgbox,% py.double_spell_muti(haystack)
-	if(g_config.is_use_xiaohe_double_pinyin)
-    	haystack .= py.allspell_muti(haystack) . py.initials_muti(haystack) . py.double_spell_muti(haystack)
-	else
-    	haystack .= py.allspell_muti(haystack) . py.initials_muti(haystack)
-	findSign:=1
-	needleArray := StrSplit(needle, " ")
-	Loop,% needleArray.MaxIndex()
-	{
-		if(!InStr(haystack, needleArray[A_Index], false))
-		{
-			findSign:=0
-			break
-		}	
 	}
 	return findSign
 }
