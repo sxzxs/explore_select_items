@@ -75,6 +75,7 @@ Return
 #if WinActive("ahk_class CabinetWClass") && A_CaretX = ""
 
 Enter::
+NumpadEnter::
     if(g_is_finc_status)
         SelectItem(all_file_name[tab_index])
     g_is_finc_status := false
